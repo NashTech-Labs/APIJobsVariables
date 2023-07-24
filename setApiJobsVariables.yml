@@ -1,0 +1,115 @@
+steps:
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob-ImportImage')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob.targetContainerRegistry]$(environment.containerRegistry)"
+      "##vso[task.setvariable variable=APIJob.sourceImage]$(environment.sourceContainerRegistry).azurecr.io/apijob:v$(build.configVersion)"
+      "##vso[task.setvariable variable=APIJob.targetImage]apijob:v$(build.configVersion)"
+      "##vso[task.setvariable variable=APIJob.sourceContainerRegistry.SPUserName]$(environment.sourceContainerRegistry.servicePrincipalApplicationId)"
+      "##vso[task.setvariable variable=APIJob.sourceContainerRegistry.SPPassword]$(environment.sourceContainerRegistry.servicePrincipalClientAuth)"
+    name: SetImportImageVariables
+    displayName: Set Import Image Variables
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_BatchScheduler-DeploymentMatrix')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_BatchScheduler.aksApps]${{ parameters.apiJobBatchSchedulerAKSApps }}"
+      "##vso[task.setvariable variable=APIJob_BatchScheduler.workloadName]${{ parameters.apiJobBatchSchedulerWorkloadName }}"
+    name: SetAKSAppDeploymentList
+    displayName: Set AKS App Deployment List
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_EventDispatcher-DeploymentMatrix')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_EventDispatcher.aksApps]${{ parameters.apiJobEventDispatcherAKSApps }}"
+      "##vso[task.setvariable variable=APIJob_EventDispatcher.workloadName]${{ parameters.apiJobEventDispatcherWorkloadName }}"
+    name: SetAKSAppDeploymentList
+    displayName: Set AKS App Deployment List
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_EventReprocess-DeploymentMatrix')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_EventReprocess.aksApps]${{ parameters.apiJobEventReprocessAKSApps }}"
+      "##vso[task.setvariable variable=APIJob_EventReprocess.workloadName]${{ parameters.apiJobEventReprocessWorkloadName }}"
+    name: SetAKSAppDeploymentList
+    displayName: Set AKS App Deployment List
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_ClaimsMigrationUtilityJob-DeploymentMatrix')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_ClaimsMigrationUtilityJob.aksApps]${{ parameters.apiJobClaimsMigrationUtilityJobAKSApps }}"
+      "##vso[task.setvariable variable=APIJob_ClaimsMigrationUtilityJob.workloadName]${{ parameters.apiJobClaimsMigrationUtilityJobWorkloadName }}"
+    name: SetAKSAppDeploymentList
+    displayName: Set AKS App Deployment List
+    
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_ClaimsMigrationUtilityPurgeJob-DeploymentMatrix')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_ClaimsMigrationUtilityPurgeJob.aksApps]${{ parameters.apiJobClaimsMigrationUtilityPurgeJobAKSApps }}"
+      "##vso[task.setvariable variable=APIJob_ClaimsMigrationUtilityPurgeJob.workloadName]${{ parameters.apiJobClaimsMigrationUtilityPurgeJobWorkloadName }}"
+    name: SetAKSAppDeploymentList
+    displayName: Set AKS App Deployment List
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_DiagnosticService-DeploymentMatrix')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_DiagnosticService.aksApps]${{ parameters.apiJobDiagnosticServiceAKSApps }}"
+      "##vso[task.setvariable variable=APIJob_DiagnosticService.workloadName]${{ parameters.apiJobDiagnosticServiceWorkloadName }}"
+    name: SetAKSAppDeploymentList
+    displayName: Set AKS App Deployment List
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_ClaimsAssignmentHistoryPurgeJob-DeploymentMatrix')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_ClaimsAssignmentHistoryPurgeJob.aksApps]${{ parameters.apiJobClaimsAssignmentHistoryPurgeJobAKSApps }}"
+      "##vso[task.setvariable variable=APIJob_ClaimsAssignmentHistoryPurgeJob.workloadName]${{ parameters.apiJobClaimsAssignmentHistoryPurgeJobWorkloadName }}"
+    name: SetAKSAppDeploymentList
+    displayName: Set AKS App Deployment List
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_BatchScheduler')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_BatchScheduler.containerRegistry]$(environment.containerRegistry).azurecr.io"
+      "##vso[task.setvariable variable=APIJob_BatchScheduler.image]$(environment.containerRegistry).azurecr.io/apijob:v$(build.configVersion)"
+      "##vso[task.setvariable variable=APIJob_BatchScheduler.workloadName]${{ parameters.apiJobBatchSchedulerWorkloadName }}"
+    name: SetAKSDeploymentVariables
+    displayName: Set AKS Deployment Variables
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_EventDispatcher')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_EventDispatcher.containerRegistry]$(environment.containerRegistry).azurecr.io"
+      "##vso[task.setvariable variable=APIJob_EventDispatcher.image]$(environment.containerRegistry).azurecr.io/apijob:v$(build.configVersion)"
+      "##vso[task.setvariable variable=APIJob_EventDispatcher.workloadName]${{ parameters.apiJobEventDispatcherWorkloadName }}"
+    name: SetAKSDeploymentVariables
+    displayName: Set AKS Deployment Variables
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_EventReprocess')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_EventReprocess.containerRegistry]$(environment.containerRegistry).azurecr.io"
+      "##vso[task.setvariable variable=APIJob_EventReprocess.image]$(environment.containerRegistry).azurecr.io/apijob:v$(build.configVersion)"
+      "##vso[task.setvariable variable=APIJob_EventReprocess.workloadName]${{ parameters.apiJobEventReprocessWorkloadName }}"
+    name: SetAKSDeploymentVariables
+    displayName: Set AKS Deployment Variables
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_ClaimsMigrationUtilityJob')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_ClaimsMigrationUtilityJob.containerRegistry]$(environment.containerRegistry).azurecr.io"
+      "##vso[task.setvariable variable=APIJob_ClaimsMigrationUtilityJob.image]$(environment.containerRegistry).azurecr.io/apijob:v$(build.configVersion)"
+      "##vso[task.setvariable variable=APIJob_ClaimsMigrationUtilityJob.workloadName]${{ parameters.apiJobClaimsMigrationUtilityJobWorkloadName }}"
+    name: SetAKSDeploymentVariables
+    displayName: Set AKS Deployment Variables
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_ClaimsMigrationUtilityPurgeJob')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_ClaimsMigrationUtilityPurgeJob.containerRegistry]$(environment.containerRegistry).azurecr.io"
+      "##vso[task.setvariable variable=APIJob_ClaimsMigrationUtilityPurgeJob.image]$(environment.containerRegistry).azurecr.io/apijob:v$(build.configVersion)"
+      "##vso[task.setvariable variable=APIJob_ClaimsMigrationUtilityPurgeJob.workloadName]${{ parameters.apiJobClaimsMigrationUtilityPurgeJobWorkloadName }}"
+    name: SetAKSDeploymentVariables
+    displayName: Set AKS Deployment Variables
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_DiagnosticService')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_DiagnosticService.containerRegistry]$(environment.containerRegistry).azurecr.io"
+      "##vso[task.setvariable variable=APIJob_DiagnosticService.image]$(environment.containerRegistry).azurecr.io/apijob:v$(build.configVersion)"
+      "##vso[task.setvariable variable=APIJob_DiagnosticService.workloadName]${{ parameters.apiJobDiagnosticServiceWorkloadName }}"
+    name: SetAKSDeploymentVariables
+    displayName: Set AKS Deployment Variables
+
+- ${{ if and(eq(parameters.appDeploymentTarget, 'AKS'), eq(parameters.key, 'APIJob_ClaimsAssignmentHistoryPurgeJob')) }}:
+  - pwsh: |
+      "##vso[task.setvariable variable=APIJob_ClaimsAssignmentHistoryPurgeJob.containerRegistry]$(environment.containerRegistry).azurecr.io"
+      "##vso[task.setvariable variable=APIJob_ClaimsAssignmentHistoryPurgeJob.image]$(environment.containerRegistry).azurecr.io/apijob:v$(build.configVersion)"
+      "##vso[task.setvariable variable=APIJob_ClaimsAssignmentHistoryPurgeJob.workloadName]${{ parameters.apiJobClaimsAssignmentHistoryPurgeJobWorkloadName }}"
+    name: SetAKSDeploymentVariables
+    displayName: Set AKS Deployment Variables
